@@ -9,10 +9,10 @@
 			console.log(data);
 		});
 		gb.router
-				.when({path: '/a', asIndex: true, data: 'test-page0'})
-				.when({path: '/b', asIndex: true, data: 'test-page1'})
-				.when({path: '/c', asIndex: true, data: 'test-page2'})
-				.when({path: '/d', asIndex: false, data: 'test-page2'})
+				.when('/a', {asIndex: true, data: 'test-page0'})
+				.when('/b', {asIndex: true, data: 'test-page1'})
+				.when('/c', {asIndex: true, data: 'test-page2'})
+				.when('/d', {asIndex: false, data: 'test-page2'})
 				.otherwise('/a')
 				.start();
 	</script>

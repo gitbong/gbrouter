@@ -29,8 +29,6 @@ var gb = gb || {};
 				}
 				_redirect = false;
 			}
-			// console.log(_preHash, _currHash);
-			// console.log('========================');
 		});
 	}
 
@@ -59,9 +57,10 @@ var gb = gb || {};
 	/*
 	 * config:{path:"/firstpage",asIndex:true}
 	 **/
-	function _when(config) {
-		if (config.path != null) {
-			_pathMap['#' + config.path] = config;
+	function _when(path, config) {
+		if (path != null) {
+			_pathMap['#' + path] = config;
+			config['_hash_'] = '#' + path;
 		}
 		return ins.router;
 	}
