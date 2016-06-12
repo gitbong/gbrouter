@@ -5,18 +5,23 @@
 	<title>gbrouter</title>
 	<script src="gbrouter.js"></script>
 	<script>
-		gb.router.addHashChangeListener(function (data) {
+		gb.router.onHashChange(function (data) {
 			console.log(data);
 		});
 		gb.router
-				.when({path: '/page0', asIndex: true, data: 'test-page0'})
-				.when({path: '/page1', asIndex: false, data: 'test-page1'})
-				.otherwise('/page0')
+				.when({path: '/a', asIndex: true, data: 'test-page0'})
+				.when({path: '/b', asIndex: true, data: 'test-page1'})
+				.when({path: '/c', asIndex: true, data: 'test-page2'})
+				.when({path: '/d', asIndex: false, data: 'test-page2'})
+				.otherwise('/a')
 				.start();
-
 	</script>
 </head>
 <body>
-
+<a href="#/a">a</a>
+<a href="#/b">b</a>
+<a href="#/c">c</a>
+<a href="#/d">d</a>
+<a href="#/e">e</a>
 </body>
 </html>

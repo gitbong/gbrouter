@@ -7,26 +7,34 @@ var gb = gb || {};
 	var _pathMap = {};
 	var _defaultPath;
 
-	var _preHash = '';
-	var _currHash = '';
+	var _preHash = null;
+	var _currHash = null;
 
-	var _linkToDefault = false;
+	var _hashChangeFn = [];
+
+	var _redirect = false;
 
 	function _init() {
 		window.addEventListener('hashchange', function () {
-			console.log('-------- 1',_getHash());
-			if (_pathMap[_getHash()] == null) {
-				_linkToDefault = true;
-				_setHash(_defaultPath);
+			var hash = _getHash();
+			if (_pathMap[hash] == null) {
+				_redirect = true;
+				window.history.go(-1);
+			} else {
+				if (_currHash != hash)
+					_preHash = _currHash;
+				_currHash = hash;
+				if (_redirect == false) {
+					_hashChangeHandler();
+				}
+				_redirect = false;
 			}
-
-			_preHash = _currHash;
-			_currHash = window.location.hash;
-			// console.log('change', _preHash, _currHash);
+			// console.log(_preHash, _currHash);
+			// console.log('========================');
 		});
 	}
 
-	//=========================
+	//===========================
 
 	function _setHash(v) {
 		window.location.hash = v;
@@ -36,14 +44,14 @@ var gb = gb || {};
 		return window.location.hash;
 	}
 
-	function _addHashChangeListener(fn) {
-		window.addEventListener('hashchange', function (e) {
-			console.log('-------- 2',_getHash());
-			if (_linkToDefault == false) {
-				fn(_pathMap[_currHash]);
-			}
-			_linkToDefault = false;
-		});
+	function _onHashChange(fn) {
+		_hashChangeFn.push(fn);
+	}
+
+	function _hashChangeHandler() {
+		for (var i in _hashChangeFn) {
+			_hashChangeFn[i](_pathMap[_currHash]);
+		}
 	}
 
 	//=========================
@@ -63,15 +71,24 @@ var gb = gb || {};
 		return ins.router;
 	}
 
+	function _getCurrHash() {
+		return _currHash;
+	}
+
+	function _getPreHash() {
+		return _preHash;
+	}
+
 	function _start() {
+		_currHash = _getHash();
 		if (_pathMap[_getHash()] == null) {
-			_linkToDefault = true;
 			_setHash(_defaultPath);
 			return;
 		}
 		if (_pathMap[_getHash()].asIndex == false) {
-			_linkToDefault = true;
 			_setHash(_defaultPath);
+		} else {
+			_hashChangeHandler();
 		}
 	}
 
@@ -83,9 +100,8 @@ var gb = gb || {};
 		when: _when,
 		otherwise: _otherwise,
 		start: _start,
-		addHashChangeListener: _addHashChangeListener
+		preHash: _getPreHash,
+		currHash: _getCurrHash,
+		onHashChange: _onHashChange
 	};
-
-	// ins.router.when = _when;
-	// ins.router.otherwise = _otherwise;
 })(gb);
