@@ -78,6 +78,14 @@ var gb = gb || {};
 		return _preHash;
 	}
 
+	function _getConfig(path) {
+		if (_pathMap['#' + path] != null) {
+			return _pathMap['#' + path];
+		} else {
+			return _pathMap['#' + _defaultPath];
+		}
+	}
+
 	function _start() {
 		_currHash = _getHash();
 		if (_pathMap[_getHash()] == null) {
@@ -101,6 +109,7 @@ var gb = gb || {};
 		start: _start,
 		preHash: _getPreHash,
 		currHash: _getCurrHash,
-		onHashChange: _onHashChange
+		onHashChange: _onHashChange,
+		getConfig: _getConfig
 	};
 })(gb);
