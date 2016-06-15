@@ -35,7 +35,7 @@ var gb = gb || {};
 	//===========================
 
 	function _setHash(v) {
-		window.location.hash = v;
+		window.location.hash = v.split('?')[0];
 	}
 
 	function _getHash() {
@@ -86,6 +86,20 @@ var gb = gb || {};
 		}
 	}
 
+	function _urlParams() {
+		var str = window.location.search;
+		var arr = str.substr(1, str.length - 1).split('&');
+
+		var obj = {};
+		for (var i in arr) {
+			var k = arr[i].split('=')[0];
+			var v = arr[i].split('=')[1];
+			obj[k] = v;
+		}
+
+		return obj;
+	}
+
 	function _start() {
 		_currHash = _getHash();
 		if (_pathMap[_getHash()] == null) {
@@ -109,6 +123,7 @@ var gb = gb || {};
 		start: _start,
 		preHash: _getPreHash,
 		currHash: _getCurrHash,
+		urlParams: _urlParams,
 		onHashChange: _onHashChange,
 		getConfig: _getConfig
 	};
