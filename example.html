@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>gbrouter</title>
-	<script src="gbrouter.js"></script>
-	<script>
-		gb.router.onHashChange(function (data) {
-			console.log(data);
-		});
-		gb.router
-				.when('/a', {asIndex: true, data: 'test-page0'})
-				.when('/b', {asIndex: true, data: 'test-page1'})
-				.when('/c', {asIndex: true, data: 'test-page2'})
-				.when('/d', {asIndex: false, data: 'test-page2'})
-				.otherwise('/a')
-				.start();
-	</script>
+    <meta charset="UTF-8">
+    <title>gbrouter</title>
+    <script src="gbRouter.js"></script>
+    <script>
+        gbRouter
+                .when('', {h: 'a'})
+                .when('b', {h: 'b'})
+                .otherwise('')
+                .useVirtualRouter(false)
+                .start()
+    </script>
 </head>
 <body>
-<a href="#/a">a</a>
-<a href="#/b">b</a>
-<a href="#/c">c</a>
-<a href="#/d">d</a>
-<a href="#/e">e</a>
+<a href="#a">a</a>
+<a href="#b">b</a>
+<a href="#c">c</a>
+<a href="#d">d</a>
+<a href="#e">e</a>
 </body>
 </html>
