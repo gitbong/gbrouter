@@ -84,5 +84,18 @@ _ins =
 	goto: _router.goto
 	useVirtualRouter: _router.useVirtualRouter
 	onHashChange: _router.onHashChange
+	getConfig: (hash)->
+		if hash is undefined
+			return _hashMap
+		else
+			if (_hashMap[hash] != null)
+				return _hashMap[hash]
+			else
+				return _hashMap[_defaultHash]
+	preHash: ->
+		return _preHash
+
+	currHash: ->
+		return _currHash
 
 window.gbRouter = _ins

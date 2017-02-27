@@ -100,7 +100,24 @@
     start: _router.start,
     goto: _router.goto,
     useVirtualRouter: _router.useVirtualRouter,
-    onHashChange: _router.onHashChange
+    onHashChange: _router.onHashChange,
+    getConfig: function(hash) {
+      if (hash === void 0) {
+        return _hashMap;
+      } else {
+        if (_hashMap[hash] !== null) {
+          return _hashMap[hash];
+        } else {
+          return _hashMap[_defaultHash];
+        }
+      }
+    },
+    preHash: function() {
+      return _preHash;
+    },
+    currHash: function() {
+      return _currHash;
+    }
   };
 
   window.gbRouter = _ins;
