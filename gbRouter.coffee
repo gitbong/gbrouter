@@ -19,19 +19,18 @@ _router =
 		return
 
 	_onHashChange: (pre, curr)->
-#		console.log arguments
 		_preHash = pre
-		_currHash = curr
-
-		if pre is curr then return
-
 		if _hashMap[curr] is undefined
 			_currHash = _defaultHash
+		else
+			_currHash = curr
 
 		if _router._virtual is false
 			history.replaceState({page: _currHash}, 'title', '#' + _currHash)
 
-		#		console.log '--- ', pre, _currHash, _hashMap[_currHash]
+		if _preHash isnt _currHash
+			_ins.onHashChange({hash: _currHash, data: _hashMap[_currHash]})
+
 		return
 
 	when: (hash, config)->
@@ -59,17 +58,21 @@ _router =
 		if _isStart is false then return
 
 		_preHash = _currHash
-		hash = if _hashMap[hash] is undefined then hash = _defaultHash else hash
 		_currHash = hash
+
 		if @_virtual is false
 			window.location.hash = hash.split('?')[0];
 		else
 			_router._onHashChange(_preHash, _currHash)
-		#			console.log _hashMap, hash
+
 		return
 
 	useVirtualRouter: (use)->
 		_router._virtual = use
+		return _ins
+
+	onHashChange: ()->
+		console.log "Hash changed. pre:#{_preHash}, curr:#{_currHash}"
 		return _ins
 
 #_router.init()
@@ -80,5 +83,6 @@ _ins =
 	start: _router.start
 	goto: _router.goto
 	useVirtualRouter: _router.useVirtualRouter
+	onHashChange: _router.onHashChange
 
 window.gbRouter = _ins

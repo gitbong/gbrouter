@@ -33,17 +33,21 @@
     },
     _onHashChange: function(pre, curr) {
       _preHash = pre;
-      _currHash = curr;
-      if (pre === curr) {
-        return;
-      }
       if (_hashMap[curr] === void 0) {
         _currHash = _defaultHash;
+      } else {
+        _currHash = curr;
       }
       if (_router._virtual === false) {
         history.replaceState({
           page: _currHash
         }, 'title', '#' + _currHash);
+      }
+      if (_preHash !== _currHash) {
+        _ins.onHashChange({
+          hash: _currHash,
+          data: _hashMap[_currHash]
+        });
       }
     },
     when: function(hash, config) {
@@ -73,7 +77,6 @@
         return;
       }
       _preHash = _currHash;
-      hash = _hashMap[hash] === void 0 ? hash = _defaultHash : hash;
       _currHash = hash;
       if (this._virtual === false) {
         window.location.hash = hash.split('?')[0];
@@ -84,6 +87,10 @@
     useVirtualRouter: function(use) {
       _router._virtual = use;
       return _ins;
+    },
+    onHashChange: function() {
+      console.log("Hash changed. pre:" + _preHash + ", curr:" + _currHash);
+      return _ins;
     }
   };
 
@@ -92,7 +99,8 @@
     otherwise: _router.otherwise,
     start: _router.start,
     goto: _router.goto,
-    useVirtualRouter: _router.useVirtualRouter
+    useVirtualRouter: _router.useVirtualRouter,
+    onHashChange: _router.onHashChange
   };
 
   window.gbRouter = _ins;

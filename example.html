@@ -6,11 +6,17 @@
     <script src="gbRouter.js"></script>
     <script>
         gbRouter
-                .when('', {h: 'a'})
+                .when('a', {h: 'a'})
                 .when('b', {h: 'b'})
-                .otherwise('')
-                .useVirtualRouter(false)
-                .start()
+                .otherwise('a')
+                .useVirtualRouter(false);
+
+        gbRouter.onHashChange = function (data) {
+            console.log('hash change:', data)
+        };
+
+        gbRouter.start()
+
     </script>
 </head>
 <body>
